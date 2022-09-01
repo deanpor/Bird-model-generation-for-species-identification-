@@ -1,0 +1,90 @@
+package com.example.birdmodelcreation;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+
+public class leg_selection extends AppCompatActivity {
+
+    public LegData[] myLegData;
+
+    private RecyclerView recyclerView;
+
+    private LegAdapter.RecyclerViewClickListener listener;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_leg_selection);
+
+        recyclerView = findViewById(R.id.recyclerView_leg);
+
+        setAdapter();
+    }
+
+    private void setOnClickListener(){
+
+        listener = new LegAdapter.RecyclerViewClickListener() {
+            @Override
+            public void onClick(View v, int position) {
+                int selectedLegImage = myLegData[position].getLegImage();
+
+                String selectedLegDescription = myLegData[position].getLegDescription();
+
+
+                 System.out.println("Here got leg" );
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("SelectedLeg", selectedLegImage);
+
+                setResult(RESULT_OK, resultIntent);
+                finish();
+
+            }
+        };
+
+
+
+
+    }
+
+    private void setAdapter(){
+
+
+
+        setOnClickListener();
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+        //  list.add(new com.example.birdmodelcreation.BeakData("Generalist ",R.drawable.generalist));
+        myLegData = new LegData[]{
+
+                new LegData("Climbing Leg/ Scratching Leg", R.drawable.climbing_and_scratching_leg),
+
+
+                new LegData("Grasping Leg", R.drawable.grasping_leg),
+                new LegData("Perching Leg", R.drawable.perching_leg),
+                new LegData("Swimming Leg", R.drawable.swimming_leg),
+                /*new  BeakData("Generalist/ Grain Eating/ Raptorial",R.drawable.generalist),
+                new  BeakData("Deep Netting",R.drawable.deep_netting),
+                new BeakData("Fruit Eating/ Scavenging",R.drawable.fruit_eating),
+                new BeakData("Surface Skimming",R.drawable.surface_skimming),
+                new  BeakData("Coniferous Seed Eating",R.drawable.coniferous_seed_eating),
+                new  BeakData("Probing/ Nectar Feeding",R.drawable.probing),
+                new  BeakData("Mud Probing",R.drawable.mud_probing),
+                new  BeakData("Filter Feeding",R.drawable.filter_feeding),
+                new  BeakData("Insect Catching/ Aerial Fishing/ Pursuit Fishing/ Chiseling",R.drawable.insect_catching),*/
+
+                //  new  BeakData("Avatar",R.drawable.avatar),
+        };
+
+        LegAdapter myLegAdapter = new LegAdapter(myLegData,leg_selection.this, listener);
+        recyclerView.setAdapter(myLegAdapter);
+
+
+    }
+}
